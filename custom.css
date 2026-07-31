@@ -1,0 +1,410 @@
+/* ==================== BASE DARK MODERN THEME ==================== */
+:root {
+	--ondemand: #9d7cee;
+	--borderondemand: #585858;
+	--accent-vpn: #4ade80;
+	--transition: all 0.28s ease;
+}
+
+/* ==================== CARDS / SERVICES ==================== */
+
+.group,
+.service,
+.item {
+	transition: var(--transition);
+	position: relative;
+	overflow: hidden;
+}
+
+/* ==================== STATUS DIMMING ==================== */
+
+
+.service:not([id*="-ondemand"]):not([id*="ondemand"]) {
+    .service-card:has(.docker-status:not([title*="Healthy"]):not([title*="Running"]):not([title*="Starting"])) {
+        opacity: 0.35;
+        pointer-events: none;
+    }
+
+    /* Dim badges when unhealthy */
+    &:has(.docker-status:not([title*="Healthy"]):not([title*="Running"]):not([title*="Starting"])) {
+        &::before,
+        &::after {
+            opacity: 0.35 !important;
+            /* filter: grayscale(1.0); */
+        }
+    }
+}
+
+[id*="-ondemand"],[id*="ondemand"] {
+    .service-card:has(.docker-status:not([title*="Healthy"]):not([title*="Running"]):not([title*="Starting"])) {
+        opacity: 0.65;
+    }
+    
+    /* Dim badges when unhealthy */
+    /*
+    &:has(.docker-status:not([title*="Healthy"]):not([title*="Running"]):not([title*="Starting"])) {
+        &::before,
+        &::after {
+            opacity: 0.8 !important;
+            filter: grayscale(0.75);
+        }
+    }
+    */
+}
+
+
+/* ==================== BADGES (Horizontal Stack) ==================== */
+
+[id*="-ondemand"]::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 40px;
+    width: 24px;
+    height: 44px;
+    background-image: url('/icons/ondemand.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    z-index: 10;
+    pointer-events: none;
+}
+
+[id*="-vpn"]::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    width: 24px;
+    height: 44px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    z-index: 10;
+    pointer-events: none;
+}
+
+/* Stacking */
+[id*="-vpn"][id*="-ondemand"]::after,
+[id*="-ondemand"][id*="-vpn"]::after {
+    right: 70px;
+}
+
+[id*="-vpn"]:not([id*="-ondemand"])::after {
+    right: 40px;
+}
+
+/* VPN icons */
+[id*="-vpnuk"]::after {
+    background-image: url('/icons/uk shield.png');
+}
+
+[id*="-vpn"]:not([id*="-vpnuk"])::after {
+    background-image: url('/icons/vpn.png');
+}
+
+
+/* ==================== CARD BORDER ==================== */
+
+[id*="-ondemand"] > [class*="service-card"],
+[id*="ondemand"] > [class*="service-card"] {
+	border: 2px solid var(--borderondemand);
+	box-shadow: 0 0 12px rgba(33, 33, 34, 0.25);
+}
+
+/* ==================== HOVER EFFECTS ==================== */
+
+.service img,
+.item img {
+	transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.service:hover img,
+.item:hover img {
+	transform: scale(1.18);
+}
+
+/* Pulse */
+.docker-status[title*="Starting"] {
+	animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+	0%, 100% { opacity: 1; }
+	50% { opacity: 0.6; }
+}
+
+/* =============== Long-press enhancements ================= */
+.service-card {
+    position: relative !important;
+    user-select: none !important;
+    -webkit-user-select: none !important;
+    -webkit-tap-highlight-color: transparent !important;
+    transition: all 0.15s ease !important;
+    will-change: transform, filter, box-shadow;
+}
+
+/* 2. Mobile-only changes */
+@media screen and (max-width: 767px) {
+  .service-card {
+    min-height: 100px;
+  }
+}
+
+/* Card flash during hold */
+.service-card.long-press-active {
+    animation: cardFlash 700ms infinite alternate ease-in-out !important;
+    /* box-shadow: 0 0 0 5px rgba(59, 130, 246, 0.6) !important; */
+}
+
+@keyframes cardFlash {
+    from { transform: scale(1.00); filter: brightness(1.18); }
+    to   { transform: scale(0.95); filter: brightness(0.95); }
+}
+
+/* Progress Ring Overlay */
+.long-press-overlay {
+    position: absolute !important;
+    inset: 0 !important;
+    background: rgba(0, 0, 0, 0.75) !important;
+    display: none !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-direction: column !important;
+    border-radius: inherit !important;
+    z-index: 9999 !important;
+    pointer-events: none !important;
+    color: white !important;
+}
+
+.long-press-overlay.show {
+    display: flex !important;
+}
+
+.progress-ring-container {
+    position: relative;
+    width: 56px;
+    height: 56px;
+}
+
+.progress-ring {
+    transform: rotate(-90deg);
+    width: 56px;
+    height: 56px;
+}
+
+.progress-ring-circle {
+    transition: stroke-dashoffset 0.05s linear;
+    stroke: #3b82f6;
+    stroke-linecap: round;
+}
+
+.progress-ring-bg {
+    stroke: rgba(255,255,255,0.2);
+}
+
+.progress-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 13px;
+    font-weight: 600;
+    color: white;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.6);
+}
+
+
+/* dockhand */
+
+#dockhand-fab-container {
+    position: fixed;
+    bottom: 20px;
+    right: 80px;
+    z-index: 999999;
+    font-family: system-ui, -apple-system, sans-serif;
+}
+
+#dockhand-fab-trigger {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: #2563eb;
+    color: white;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+}
+#dockhand-fab-panel {
+    display: none;
+    position: absolute;
+    bottom: 70px;
+    right: 0;
+    width: 320px;
+    max-height: 450px;
+    background: rgb(206, 206, 206);
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    overflow-y: auto;
+    border: 1px solid #e5e7eb;
+}
+.dh-header {
+    padding: 12px;
+    background: #f3f4f6;
+    color: black;
+    font-weight: bold;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    justify-content: space-between;
+}
+.dh-stack-item {
+    padding: 12px;
+    border-bottom: 1px solid #f3f4f6;
+}
+.dh-stack-name {
+    font-weight: 500;
+    margin-bottom: 6px;
+    color: black;
+}
+.dh-actions {
+    display: flex;
+    gap: 6px;
+}
+.dh-btn {
+    flex: 1;
+    padding: 6px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 11px;
+    color: white;
+    font-weight: bold;
+}
+.btn-start { background: #16a34a; }
+.btn-stop { background: #dc2626; }
+.btn-reset { background: #3b82f6; }
+.dh-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* EXPANDABLE ACCORDION STYLES */
+.dh-expand-toggle {
+    width: 100%;
+    background: none;
+    border: none;
+    color: #6b7280;
+    font-size: 16px;           /* Default (mobile-first) */
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 2px 0;
+}
+
+/* Desktop - smaller text */
+@media (min-width: 768px) {
+    .dh-expand-toggle {
+        font-size: 11px;
+    }
+}
+.dh-expand-toggle:hover { color: #2563eb; }
+.dh-container-details-list {
+    display: none;
+    margin-top: 6px;
+    padding: 8px;
+    background: #f9fafb;
+    border-radius: 4px;
+    border: 1px dashed #e5e7eb;
+}
+.dh-nested-c-row {
+    display: flex;
+    flex-direction: column;
+    font-size: 11px;
+    padding: 6px 0;
+    border-bottom: 1px solid #f3f4f6;
+}
+.dh-nested-c-row:last-child {
+    border-bottom: none;
+}
+.dh-nested-c-top {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 500;
+    color: #1f2937;
+    margin-bottom: 2px;
+}
+.dh-nested-c-meta {
+    display: flex;
+    gap: 8px;
+    color: #6b7280;
+    font-size: 10px;
+}
+.dh-meta-label {
+    font-weight: 600;
+    color: #4b5563;
+}
+
+/* DYNAMIC COLOR STATE CODES */
+.state-pill {
+    font-weight: bold;
+    padding: 1px 4px;
+    border-radius: 3px;
+}
+.state-running { background: #dcfce7; color: #15803d; }
+.state-exited { background: #fee2e2; color: #b91c1c; }
+.state-paused { background: #fef9c3; color: #a16207; }
+.state-unknown { background: #e5e7eb; color: #374151; }
+
+/* POPUP OVERLAY STYLES */
+#dh-popup-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    background: rgba(0,0,0,0.5);
+    z-index: 1000000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.dh-popup-content {
+    background: white;
+    width: 450px;
+    border-radius: 8px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    overflow: hidden;
+}
+.dh-popup-body {
+    padding: 16px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+.dh-c-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #f3f4f6;
+}
+.dh-c-info { display: flex; flex-direction: column; }
+.dh-c-name { font-weight: 500; font-size: 14px; color: black; }
+.dh-c-sub { font-size: 12px; color: #6b7280; }
+.dh-status-badge {
+    font-size: 11px; padding: 2px 6px; border-radius: 4px; font-weight: bold;
+}
+.status-pending { background: #e5e7eb; color: #374151; }
+.status-success { background: #dcfce7; color: #166534; }
+.status-error { background: #fee2e2; color: #991b1b; }
+
+.dh-spinner {
+    width: 14px; height: 14px;
+    border: 2px solid #e5e7eb;
+    border-top-color: #2563eb;
+    border-radius: 50%;
+    animation: dh-spin 0.8s linear infinite;
+    display: inline-block;
+    margin-left: 6px;
+    vertical-align: middle;
+}
+@keyframes dh-spin { to { transform: rotate(360deg); } }
