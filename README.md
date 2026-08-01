@@ -6,6 +6,8 @@ These scripts add container status icons, mobile long-press protection, Dockhand
 
 > **Important**: This is intended for private/local networks only. Do not expose the Dockhand API or these controls to the public internet without proper authentication and network isolation.
 
+> I created this for my own use and share here because I've had so much fun and learnt so much from the selfhosting community in the last 7 months. Also my ideas, AI aided coding/optimization, human fixed.
+
 ---
 
 ## Features
