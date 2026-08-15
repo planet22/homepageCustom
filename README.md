@@ -8,8 +8,6 @@ These scripts add dual-backend container control (Dockhand **or** Docker Engine 
 
 > I created this for my own use and share here because I've had so much fun and learnt so much from the selfhosting community in the last 7 months. Also my ideas, AI aided coding/optimization, human fixed.
 
-> I created this for my own use and share here because I've had so much fun and learnt so much from the selfhosting community in the last 7 months. Also my ideas, AI aided coding/optimization, human fixed.
-
 ---
 
 ## Features
